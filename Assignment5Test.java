@@ -1,9 +1,8 @@
-package cpsc_233;
 /**
  * Assignment 4
  * Course: CPSC 233
  * Prof: Manzara
- * UCID: 30002229
+ * UCID: 30002229 & 30008424
  * TA session: 03
  * @author Asjad Hassan Malick & Sharjeel Junaid
  */
