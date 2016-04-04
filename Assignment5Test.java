@@ -1,8 +1,9 @@
+package Assignment5;
 /**
- * Assignment 4
+ * Assignment 5
  * Course: CPSC 233
  * Prof: Manzara
- * UCID: 30002229 & 30008424
+ * UCID: 30002229
  * TA session: 03
  * @author Asjad Hassan Malick & Sharjeel Junaid
  */
@@ -287,8 +288,8 @@ public class Assignment5Test
 		
 		//4 buttons
 		final JButton simulation = new JButton("RUN SIMULATION");
-		final JButton load = new JButton("Load saved simulation");
-		final JButton save = new JButton("Save current simulation");
+		final JButton loadf = new JButton("Load saved simulation");
+		final JButton savef = new JButton("Save current simulation");
 		final JButton stop = new JButton("STOP SIMULATION");
 		
 		//Panel for sliders relating to temp
@@ -354,8 +355,8 @@ public class Assignment5Test
 		
 		//Add the buttons
 		buttonPanel.add(simulation);
-		buttonPanel.add(load);
-		buttonPanel.add(save);
+		buttonPanel.add(loadf);
+		buttonPanel.add(savef);
 		buttonPanel.add(stop);
 		
 		//Create a panel to show the current data in the form of label
@@ -404,6 +405,40 @@ public class Assignment5Test
 		//CREATE SECOND TAB
 		panel.addTab("CONTROL SETTINGS",secondTabPanel);
 		
+		//Saving frame
+		final JFrame saveFrame = new JFrame();
+		final JPanel savePanel = new JPanel();
+		savePanel.setLayout(new GridLayout(3,1));
+		
+		final JLabel saveLabel = new JLabel("Name of file to save");
+		final JTextField saveField = new JTextField();
+		final JButton save = new JButton("SAVE");
+		
+		savePanel.add(saveLabel);
+		savePanel.add(saveField);
+		savePanel.add(save);
+		
+		saveFrame.add(savePanel);
+		
+		saveFrame.setSize(200,250);
+		saveFrame.setVisible(false);
+		
+		//Load frame
+		final JFrame loadFrame = new JFrame();
+		final JPanel loadPanel = new JPanel();
+		loadPanel.setLayout(new GridLayout(3,1));
+		
+		final JTextField loadField = new JTextField();
+		
+		loadPanel.add(loadLabel);
+		loadPanel.add(loadField);
+		loadPanel.add(load);
+		
+		loadFrame.add(loadPanel);
+		
+		loadFrame.setSize(200,250);
+		loadFrame.setVisible(false);
+		
 		//SHARJEEL THIS SHIT IS FOR YOU, MAKE WHATEVER LOCAL VARIABLES YOU WISH
 		class SlidingClickingListener implements ActionListener, ChangeListener
 		{
@@ -416,56 +451,45 @@ public class Assignment5Test
 				if(ac)
 				{
 					ACActivatedLabel.setBackground(GREEN);
-					ACActivatedLabel.setText("ACTIVE");
+					ACActivatedLabel.setText(" AIR CONDITIONER: ACTIVE");
 				}
 				else
 				{
 					ACActivatedLabel.setBackground(RED);
-					ACActivatedLabel.setText("NOT ACTIVE");
+					ACActivatedLabel.setText(" AIR CONDITIONER: NOT ACTIVE");
 				}
 				
 				if(furn)
 				{
 					furnaceActivatedLabel.setBackground(GREEN);
-					furnaceActivatedLabel.setText("ACTIVE");
+					furnaceActivatedLabel.setText(" FURNACE: ACTIVE");
 				}
 				else
 				{
 					furnaceActivatedLabel.setBackground(RED);
-					furnaceActivatedLabel.setText("NOT ACTIVE");
+					furnaceActivatedLabel.setText(" FURNACE: NOT ACTIVE");
 				}
 				
 				if(spk)
 				{
 					sprinklerActivatedLabel.setBackground(GREEN);
-					sprinklerActivatedLabel.setText("ACTIVE");
+					sprinklerActivatedLabel.setText(" SPRINKLER: ACTIVE");
 				}
 				else
 				{
 					sprinklerActivatedLabel.setBackground(RED);
-					sprinklerActivatedLabel.setText("NOT ACTIVE");
-				}
-				
-				if(spk)
-				{
-					sprinklerActivatedLabel.setBackground(GREEN);
-					sprinklerActivatedLabel.setText("ACTIVE");
-				}
-				else
-				{
-					sprinklerActivatedLabel.setBackground(RED);
-					sprinklerActivatedLabel.setText("NOT ACTIVE");
+					sprinklerActivatedLabel.setText(" SPRINKLER: NOT ACTIVE");
 				}
 				
 				if(hum)
 				{
 					humidActivatedLabel.setBackground(GREEN);
-					humidActivatedLabel.setText("ACTIVE");
+					humidActivatedLabel.setText(" HUMIDIFER: ACTIVE");
 				}
 				else
 				{
 					humidActivatedLabel.setBackground(RED);
-					humidActivatedLabel.setText("NOT ACTIVE");
+					humidActivatedLabel.setText(" HUMIDIFER: NOT ACTIVE");
 				}
 					
 			}
@@ -477,19 +501,32 @@ public class Assignment5Test
 					//DO SIMULATION THREADS HERE
 				}
 				
-				if(bc.getSource().equals(load))
+				if(bc.getSource().equals(loadf))
 				{
-					//DO LOADING OF FILES IN HERE
+					loadFrame.setVisible(true);
 				}
 				
-				if(bc.getSource().equals(save))
+				if(bc.getSource().equals(savef))
 				{
-					//DO SAVING OF FILES HERE
+					saveFrame.setVisible(true);
 				}
 				if(bc.getSource().equals(stop))
 				{
 					//STOP THREADS HERE
 				}
+				
+				if(bc.getSource().equals(load))
+				{
+					loadFrame.setVisible(false);
+					//DO LOADING OF FILES IN HERE
+				}
+				
+				if(bc.getSource().equals(save))
+				{
+					saveFrame.setVisible(false);
+					//DO SAVING OF FILES HERE
+				}
+				
 			}
 
 			public void stateChanged(ChangeEvent sl) 
@@ -521,9 +558,11 @@ public class Assignment5Test
 		
 		//Add the lis to the buttons
 		simulation.addActionListener(lis);
+		loadf.addActionListener(lis);
+		savef.addActionListener(lis);
+		stop.addActionListener(lis);
 		load.addActionListener(lis);
 		save.addActionListener(lis);
-		stop.addActionListener(lis);
 		
 		//add the lis to the sliders
 		tempSlider.addChangeListener(lis);
