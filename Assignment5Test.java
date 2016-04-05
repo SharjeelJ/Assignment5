@@ -3,7 +3,7 @@ package Assignment5;
  * Assignment 5
  * Course: CPSC 233
  * Prof: Manzara
- * UCID: 30002229
+ * UCID: 30002229 & 30008424
  * TA session: 03
  * @author Asjad Hassan Malick & Sharjeel Junaid
  */
@@ -428,7 +428,9 @@ public class Assignment5Test
 		final JPanel loadPanel = new JPanel();
 		loadPanel.setLayout(new GridLayout(3,1));
 		
+		final JLabel loadLabel = new JLabel("Name of file to load");
 		final JTextField loadField = new JTextField();
+		final JButton load = new JButton("LOAD");
 		
 		loadPanel.add(loadLabel);
 		loadPanel.add(loadField);
