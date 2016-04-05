@@ -420,7 +420,7 @@ public class Assignment5Test
 		
 		saveFrame.add(savePanel);
 		
-		saveFrame.setSize(200,250);
+		saveFrame.setSize(150,150);
 		saveFrame.setVisible(false);
 		
 		//Load frame
@@ -438,7 +438,7 @@ public class Assignment5Test
 		
 		loadFrame.add(loadPanel);
 		
-		loadFrame.setSize(200,250);
+		loadFrame.setSize(150,150);
 		loadFrame.setVisible(false);
 		
 		//SHARJEEL THIS SHIT IS FOR YOU, MAKE WHATEVER LOCAL VARIABLES YOU WISH
@@ -500,7 +500,7 @@ public class Assignment5Test
 			{
 				if(bc.getSource().equals(simulation))
 				{
-					//DO SIMULATION THREADS HERE
+					//DO Greehhouse thread intiializtion and runnning here
 				}
 				
 				if(bc.getSource().equals(loadf))
