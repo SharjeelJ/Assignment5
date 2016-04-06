@@ -12,6 +12,8 @@ public class SoilThread implements Runnable
 	
 	private double current = 0;
 	
+	private boolean sprink = false;
+	
 	public SoilThread(double cSoil, double UL, double LL, double r)
 	{
 		super();
@@ -24,6 +26,11 @@ public class SoilThread implements Runnable
 	public double current()
 	{
 		return current;
+	}
+	
+	public boolean isSprinkON()
+	{
+		return sprink;
 	}
 
 	public void run() 

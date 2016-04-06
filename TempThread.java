@@ -13,6 +13,8 @@ public class TempThread implements Runnable
 	
 	private double current = 0;
 	
+	private boolean furn = false;
+	
 	public TempThread(double cTemp, double UL, double LL, double hr, double cr)
 	{
 		super();
@@ -24,6 +26,11 @@ public class TempThread implements Runnable
 	public double current()
 	{
 		return current;
+	}
+	
+	public boolean isFurnON()
+	{
+		return furn;
 	}
 
 	public void run() 

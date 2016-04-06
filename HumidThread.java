@@ -12,6 +12,8 @@ public class HumidThread implements Runnable
 	
 	private double current = 0;
 	
+	private boolean humid = false;
+	
 	public HumidThread(double cHumid, double UL, double LL, double r)
 	{
 		super();
@@ -26,7 +28,12 @@ public class HumidThread implements Runnable
 	{
 		return current;
 	}
-
+	
+	public boolean isHumidON()
+	{
+		return humid;
+	}
+	
 	public void run() {
 		// TODO Auto-generated method stub
 		
