@@ -18,6 +18,10 @@ public class GreenHouseThread implements Runnable
 	private boolean sprinkON = false;
 	private boolean humidON = false;
 	
+	private double temperature = 0;
+	private double soilMoisture = 0;
+	private double humidity = 0;
+	
 	public GreenHouseThread(double tUL, double tLL, double hUL, double hLL, double sUL, double sLL)
 	{
 		super();
@@ -41,6 +45,21 @@ public class GreenHouseThread implements Runnable
 	public boolean isHumidON()
 	{
 		return humidON;
+	}
+	
+	public double currentTemp()
+	{
+		return temperature;
+	}
+	
+	public double currentSoil()
+	{
+		return soilMoisture;
+	}
+	
+	public double currentHumidity()
+	{
+		return humidity;
 	}
 
 }
