@@ -2,7 +2,7 @@ package Assignment5;
 
 public class GreenHouseThread implements Runnable
 {
-	
+	//Ambient rates
 	private double tempRate = 0;
 	private double soilRate = 0;
 	private double humidRate = 0;

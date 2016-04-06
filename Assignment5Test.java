@@ -500,7 +500,7 @@ public class Assignment5Test
 			{
 				if(bc.getSource().equals(simulation))
 				{
-					//DO Greehhouse thread intiializtion and runnning here
+					//Initilaize 4 threads.
 				}
 				
 				if(bc.getSource().equals(loadf))

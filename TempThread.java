@@ -2,17 +2,20 @@ package Assignment5;
 
 public class TempThread implements Runnable
 {
-	private double rate;
+	//AC and furnace rates
+	private double heatingRate;
+	private double coolingRate;
 	
 	private double upperLimit;
 	private double lowerLimit;
 	
 	private double target;
 	
-	private double current;
+	private double current = 0;
 	
-	public TempThread(double cTemp, double UL, double LL, double hr, double cr, double hr)
+	public TempThread(double cTemp, double UL, double LL, double hr, double cr)
 	{
+		super();
 		upperLimit = UL;
 		lowerLimit = LL;
 		target = (UL - 3);
