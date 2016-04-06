@@ -10,6 +10,7 @@ package Assignment5;
 
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.text.JTextComponent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -264,14 +265,14 @@ public class Assignment5Test
 		final JTextField initialGHHumidField = new JTextField(2);
 		initialGHHumidField.setBackground(GREY);
 		
-		final JTextField HumidRateField = new JTextField(2);
+		final JTextField humidRateField = new JTextField(2);
 		final JTextField aridRateField = new JTextField(2);
 		
 		//ADD THEM TO THE MAIN PANEL
 		GHPanel.add(initialGHHumidLabel);
 		GHPanel.add(initialGHHumidField);
 		GHPanel.add(HumidRateLabel);
-		GHPanel.add(HumidRateField);
+		GHPanel.add(humidRateField);
 		GHPanel.add(aridRateLabel);
 		GHPanel.add(aridRateField);
 		
@@ -291,6 +292,7 @@ public class Assignment5Test
 		final JButton loadf = new JButton("Load saved simulation");
 		final JButton savef = new JButton("Save current simulation");
 		final JButton stop = new JButton("STOP SIMULATION");
+		stop.setEnabled(false);
 		
 		//Panel for sliders relating to temp
 		final JPanel tempSliderPanel = new JPanel();
@@ -500,6 +502,31 @@ public class Assignment5Test
 			{
 				if(bc.getSource().equals(simulation))
 				{
+					simulation.setEnabled(false);
+					stop.setEnabled(true);
+					
+					tempRangeField.setEditable(false);
+					
+					soilRangeField.setEditable(false);
+					soilRangeField2.setEditable(false);
+					
+					humidRangeField.setEditable(false);
+					humidRangeField2.setEditable(false);
+					tempRangeField.setEditable(false);
+					
+					initialGHTempField.setEditable(false);
+					heatingRateField.setEditable(false);
+					coolingRateField.setEditable(false);
+					ambientTempRateField.setEditable(false);
+					
+					initialGHSoilField.setEditable(false);
+					moistureRateField.setEditable(false);
+					dryingRateField.setEditable(false);
+					
+					initialGHHumidField.setEditable(false);
+					humidRateField.setEditable(false);
+					aridRateField.setEditable(false);
+					
 					//Initilaize 4 threads.
 				}
 				
@@ -514,6 +541,30 @@ public class Assignment5Test
 				}
 				if(bc.getSource().equals(stop))
 				{
+					simulation.setEnabled(true);
+					stop.setEnabled(false);
+					
+					tempRangeField.setEditable(true);
+					
+					soilRangeField.setEditable(true);
+					soilRangeField2.setEditable(true);
+					
+					humidRangeField.setEditable(true);
+					humidRangeField2.setEditable(true);
+					tempRangeField.setEditable(true);
+					
+					initialGHTempField.setEditable(true);
+					heatingRateField.setEditable(true);
+					coolingRateField.setEditable(true);
+					ambientTempRateField.setEditable(true);
+					
+					initialGHSoilField.setEditable(true);
+					moistureRateField.setEditable(true);
+					dryingRateField.setEditable(true);
+					
+					initialGHHumidField.setEditable(true);
+					humidRateField.setEditable(true);
+					aridRateField.setEditable(true);
 					//STOP THREADS HERE
 				}
 				
