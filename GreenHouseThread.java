@@ -14,7 +14,11 @@ public class GreenHouseThread implements Runnable
 	private double soilUpperLimit;
 	private double soilLowerLimit;
 	
-	public GreenHouseThread()
+	private boolean furnON = false;
+	private boolean sprinkON = false;
+	private boolean humidON = false;
+	
+	public GreenHouseThread(double tUL, double tLL, double hUL, double hLL, double sUL, double sLL)
 	{
 		super();
 	}
@@ -22,6 +26,21 @@ public class GreenHouseThread implements Runnable
 	public void run() 
 	{
 		//make the threads all run here
+	}
+	
+	public boolean isFurnON()
+	{
+		return furnON;
+	}
+	
+	public boolean isSprinkON()
+	{
+		return sprinkON;
+	}
+	
+	public boolean isHumidON()
+	{
+		return humidON;
 	}
 
 }
