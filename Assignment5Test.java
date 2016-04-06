@@ -10,8 +10,6 @@ package Assignment5;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.JTextComponent;
-
 import java.awt.*;
 import java.awt.event.*;
 
