@@ -526,12 +526,28 @@ public class Assignment5Test
 					humidRateField.setEditable(false);
 					aridRateField.setEditable(false);
 					
-					//Initilaize 4 threads and GHE.
+					//Initialize the GHE
 					double initialTemp = Double.parseDouble(initialGHTempField.getText());
 					double initialSoil = Double.parseDouble(initialGHSoilField.getText());
 					double initialHumid = Double.parseDouble(initialGHHumidField.getText());
 					
 					GreenHouseEnvironment GHE = new GreenHouseEnvironment(initialTemp, initialSoil, initialHumid);
+					
+					//initialize the GreenHouse thread
+					double ambientTemp = Double.parseDouble(ambientTempRateField.getText());
+					double ambientSoil = (Double.parseDouble(dryingRateField.getText())) * -1; //negate it
+					double ambientArid = (Double.parseDouble(aridRateField.getText())) * -1;
+					
+					GreenHouseThread GThread = new GreenHouseThread(ambientTemp, ambientSoil, ambientArid);
+					
+					//Initialize the temperature thread
+					double furnaceRate = Double.parseDouble(heatingRateField.getText());
+					double coolingRate = Double.parseDouble(coolingRateField.getText()) * -1;
+					double upperLimitTemp = Double.parseDouble(tempRangeField.getText()) + 3;
+					double lowerLimitTemp = Double.parseDouble(tempRangeField.getText()) - 3;
+					
+					TempThread tempSensor = new TempThread(upperLimitTemp, lowerLimitTemp, furnaceRate,
+							coolingRate, GHE);
 				}
 				
 				if(bc.getSource().equals(loadf))

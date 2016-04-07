@@ -24,7 +24,7 @@ public class TempThread implements Runnable
 	 * @param UL Upper Limit for temperature
 	 * @param LL Lower Limit for temperature
 	 * @param hr Heating rate of furnace
-	 * @param cr Cooling Rate of furnace
+	 * @param cr Cooling Rate of AC (negative value)
 	 * @param g The collective greenhouse environment
 	 */
 	public TempThread(double UL, double LL, double hr, double cr, GreenHouseEnvironment g)
