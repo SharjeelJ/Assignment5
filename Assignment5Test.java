@@ -441,11 +441,20 @@ public class Assignment5Test
 		loadFrame.setSize(150,150);
 		loadFrame.setVisible(false);
 		
-		//SHARJEEL THIS SHIT IS FOR YOU, MAKE WHATEVER LOCAL VARIABLES YOU WISH
 		class SlidingClickingListener implements ActionListener, ChangeListener
 		{
 			//Booleans telling whether a machine is on or not
 			private boolean ac = false, furn = false, spk = false, hum = false;
+			
+			private GreenHouseEnvironment GHE;
+			
+			private GreenHouseThread GThread; 
+			
+			private TempThread tempSensor;
+			
+			private SoilThread soilSensor;
+			
+			private HumidThread humidSensor;
 			
 			//METHOD TO SWITCH THE COLORS AND ACTIVE STATUS OF MACHINES
 			private void colorSwitch()
@@ -500,6 +509,7 @@ public class Assignment5Test
 			{
 				if(bc.getSource().equals(simulation))
 				{
+				
 					//disable and enable certain fields and buttons
 					simulation.setEnabled(false);
 					stop.setEnabled(true);
@@ -531,14 +541,14 @@ public class Assignment5Test
 					double initialSoil = Double.parseDouble(initialGHSoilField.getText());
 					double initialHumid = Double.parseDouble(initialGHHumidField.getText());
 					
-					GreenHouseEnvironment GHE = new GreenHouseEnvironment(initialTemp, initialSoil, initialHumid);
+					GHE = new GreenHouseEnvironment(initialTemp, initialSoil, initialHumid);
 					
 					//initialize the GreenHouse thread
 					double ambientTemp = Double.parseDouble(ambientTempRateField.getText());
 					double ambientSoil = (Double.parseDouble(dryingRateField.getText())) * -1; //negate it
 					double ambientArid = (Double.parseDouble(aridRateField.getText())) * -1;
 					
-					GreenHouseThread GThread = new GreenHouseThread(ambientTemp, ambientSoil, ambientArid);
+					GThread = new GreenHouseThread(ambientTemp, ambientSoil, ambientArid);
 					
 					//Initialize the temperature thread
 					double furnaceRate = Double.parseDouble(heatingRateField.getText());
@@ -546,8 +556,25 @@ public class Assignment5Test
 					double upperLimitTemp = Double.parseDouble(tempRangeField.getText()) + 3;
 					double lowerLimitTemp = Double.parseDouble(tempRangeField.getText()) - 3;
 					
-					TempThread tempSensor = new TempThread(upperLimitTemp, lowerLimitTemp, furnaceRate,
+					tempSensor = new TempThread(upperLimitTemp, lowerLimitTemp, furnaceRate,
 							coolingRate, GHE);
+					
+					//Initialize the soil thread
+					double mositureRate = Double.parseDouble(moistureRateField.getText());
+					double upperLimitSoil = Double.parseDouble(soilRangeField2.getText());
+					double lowerLimitSoil = Double.parseDouble(soilRangeField.getText());
+					
+					soilSensor = new SoilThread(upperLimitSoil, lowerLimitSoil, mositureRate, GHE);
+					
+					//Initialize the humid thread
+					double humidRate = Double.parseDouble(humidRateField.getText());
+					double upperLimitHumid = Double.parseDouble(humidRangeField2.getText());
+					double lowerLimitHumid = Double.parseDouble(humidRangeField.getText());
+					
+					humidSensor = new HumidThread(upperLimitHumid, lowerLimitHumid, humidRate, GHE);
+					
+					//START THE THREADS
+					
 				}
 				
 				if(bc.getSource().equals(loadf))
