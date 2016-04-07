@@ -5,27 +5,26 @@ public class SoilThread implements Runnable
 	//The sprinkler rate
 	private double rate;
 	
+	//The limits 
 	private double upperLimit;
 	private double lowerLimit;
-	
+		
+	//Will get this using the limits
 	private double target;
-	
-	private double current = 0;
+		
+	//Common location to store data
+	private GreenHouseEnvironment GHE;
 	
 	private boolean sprink = false;
 	
-	public SoilThread(double cSoil, double UL, double LL, double r)
+	public SoilThread(double UL, double LL, double r,GreenHouseEnvironment g)
 	{
 		super();
 		rate = r;
 		upperLimit = UL;
 		lowerLimit = LL;
-		current = cSoil;
 		target = (UL - 3);
-	}
-	public double current()
-	{
-		return current;
+		GHE = g;
 	}
 	
 	public boolean isSprinkON()

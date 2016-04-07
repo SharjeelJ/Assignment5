@@ -7,33 +7,23 @@ public class GreenHouseThread implements Runnable
 	private double soilRate = 0;
 	private double humidRate = 0;
 	
-	private double temperature = 0;
-	private double soilMoisture = 0;
-	private double humidity = 0;
-	
-	public GreenHouseThread()
+	/**
+	 * The constructor for the greenhouse thread
+	 * @param tr rate at which temperature changes, can be negative or positive
+	 * @param sr rate at which soil dries up, will be negative
+	 * @param hr rate at which air becomes more arid, will be negative
+	 */
+	public GreenHouseThread(double tr, double sr, double hr)
 	{
 		super();
+		tempRate = tr;
+		soilRate = sr;
+		humidRate = hr;
 	}
 
 	public void run() 
 	{
 		//make the threads all run here
-	}
-	
-	public double currentTemp()
-	{
-		return temperature;
-	}
-	
-	public double currentSoil()
-	{
-		return soilMoisture;
-	}
-	
-	public double currentHumidity()
-	{
-		return humidity;
 	}
 
 }

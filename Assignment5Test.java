@@ -500,6 +500,7 @@ public class Assignment5Test
 			{
 				if(bc.getSource().equals(simulation))
 				{
+					//disable and enable certain fields and buttons
 					simulation.setEnabled(false);
 					stop.setEnabled(true);
 					
@@ -525,7 +526,12 @@ public class Assignment5Test
 					humidRateField.setEditable(false);
 					aridRateField.setEditable(false);
 					
-					//Initilaize 4 threads.
+					//Initilaize 4 threads and GHE.
+					double initialTemp = Double.parseDouble(initialGHTempField.getText());
+					double initialSoil = Double.parseDouble(initialGHSoilField.getText());
+					double initialHumid = Double.parseDouble(initialGHHumidField.getText());
+					
+					GreenHouseEnvironment GHE = new GreenHouseEnvironment(initialTemp, initialSoil, initialHumid);
 				}
 				
 				if(bc.getSource().equals(loadf))

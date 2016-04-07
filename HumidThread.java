@@ -5,28 +5,26 @@ public class HumidThread implements Runnable
 	//The humidifer rate
 	private double rate;
 	
+	//The limits 
 	private double upperLimit;
 	private double lowerLimit;
-	
+		
+	//Will get this using the limits
 	private double target;
-	
-	private double current = 0;
+		
+	//Common location to store data
+	private GreenHouseEnvironment GHE;
 	
 	private boolean humid = false;
 	
-	public HumidThread(double cHumid, double UL, double LL, double r)
+	public HumidThread(double UL, double LL, double r, GreenHouseEnvironment g)
 	{
 		super();
 		rate = r;
 		upperLimit = UL;
 		lowerLimit = LL;
-		current = cHumid;
 		target = (UL - 3);
-	}
-	
-	public double current()
-	{
-		return current;
+		GHE = g;
 	}
 	
 	public boolean isHumidON()
