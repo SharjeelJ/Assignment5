@@ -5,6 +5,10 @@ public class GreenHouseEnvironment {
     private double temperature = 0;
     private double soilMoisture = 0;
     private double humidity = 0;
+    public double tempChangeRate = 11;
+    public double humidChangeRate = 11;
+    public double soilChangeRate = 11;
+    public boolean runSubThreads = false;
 
     /**
      * Constructor for an environment
@@ -53,7 +57,6 @@ public class GreenHouseEnvironment {
      */
     public synchronized void changeTemp(double t) {
         temperature = t;
-        return;
     }
 
     /**
@@ -63,7 +66,6 @@ public class GreenHouseEnvironment {
      */
     public synchronized void changeSoil(double s) {
         soilMoisture = s;
-        return;
     }
 
     /**
@@ -71,9 +73,8 @@ public class GreenHouseEnvironment {
      *
      * @param h the new humidity
      */
-    public synchronized void changeHumidiity(double h) {
+    public synchronized void changeHumidity(double h) {
         humidity = h;
-        return;
     }
 
 }

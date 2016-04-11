@@ -1,7 +1,7 @@
 package Assignment5;
 
-public class HumidThread implements Runnable {
-    //The humidifer rate
+public class HumidThread extends Thread {
+    //The humidifier rate in seconds
     private double rate;
 
     //The limits
@@ -11,10 +11,13 @@ public class HumidThread implements Runnable {
     //Will get this using the limits
     private double target;
 
+    //Ambient rate
+    private double humidRate = 10;
+
     //Common location to store data
     private GreenHouseEnvironment GHE;
 
-    //Tells if the humidfier is on
+    //Tells if the humidifier is on
     private boolean humid = false;
 
     /**
@@ -23,14 +26,16 @@ public class HumidThread implements Runnable {
      * @param UL Upper Limit of allowed soil moisture
      * @param LL Lower Limit of allowed soil moisture
      * @param r  Rate at which humidifier restores humidity
-     * @param g  the collective Greenhouse environement
+     * @param hr rate at which soil dries up, will be negative
+     * @param g  the collective Greenhouse environment
      */
-    public HumidThread(double UL, double LL, double r, GreenHouseEnvironment g) {
+    public HumidThread(double UL, double LL, double r, double hr, GreenHouseEnvironment g) {
         super();
-        rate = r;
+        rate = r / 60;
         upperLimit = UL;
         lowerLimit = LL;
         target = (UL - 3);
+        humidRate = hr;
         GHE = g;
     }
 
@@ -44,7 +49,9 @@ public class HumidThread implements Runnable {
     }
 
     public void run() {
-        // TODO Auto-generated method stub
+        while (GHE.runSubThreads == true) {
 
+        }
+        return;
     }
 }

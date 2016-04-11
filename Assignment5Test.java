@@ -98,7 +98,7 @@ public class Assignment5Test {
 
         final JTextField tempRangeField = new JTextField(2);
 
-        final JLabel tempPlusMin = new JLabel("+ or -   3 degrees Celsius");
+        final JLabel tempPlusMin = new JLabel("+/-   3 degrees Celsius");
         tempPlusMin.setOpaque(true);
         tempPlusMin.setBackground(TEMP);
 
@@ -280,7 +280,7 @@ public class Assignment5Test {
         firstTabPanel.add(GHPanel, BorderLayout.CENTER);
 
         //CREATE THE TAB
-        panel.addTab("INIITAL VALUES", firstTabPanel);
+        panel.addTab("INITIAL VALUES", firstTabPanel);
 
         //**********************************************
         //SOUTH PANEL
@@ -298,10 +298,10 @@ public class Assignment5Test {
         tempSliderPanel.setLayout(new GridLayout(2, 1));
 
         //Label the slider
-        final JLabel tempSliderLabel = new JLabel("Temperature update time");
+        final JLabel tempSliderLabel = new JLabel("Temperature update time (seconds)");
 
-        //Cretae and set the slider for temperature
-        final JSlider tempSlider = new JSlider(0, 20);
+        //Create and set the slider for temperature
+        final JSlider tempSlider = new JSlider(1, 21);
         tempSlider.setMajorTickSpacing(5);
         tempSlider.setMinorTickSpacing(1);
         tempSlider.setPaintTicks(true);
@@ -315,9 +315,9 @@ public class Assignment5Test {
         final JPanel soilSliderPanel = new JPanel();
         soilSliderPanel.setLayout(new GridLayout(2, 1));
 
-        final JLabel soilSliderLabel = new JLabel("Soil Moisture update time");
+        final JLabel soilSliderLabel = new JLabel("Soil Moisture update time (seconds)");
 
-        final JSlider soilSlider = new JSlider(0, 20);
+        final JSlider soilSlider = new JSlider(1, 21);
         soilSlider.setMajorTickSpacing(5);
         soilSlider.setMinorTickSpacing(1);
         soilSlider.setPaintTicks(true);
@@ -330,9 +330,9 @@ public class Assignment5Test {
         final JPanel humidSliderPanel = new JPanel();
         humidSliderPanel.setLayout(new GridLayout(2, 1));
 
-        final JLabel humidSliderLabel = new JLabel("Humidity update time");
+        final JLabel humidSliderLabel = new JLabel("Humidity update time (seconds)");
 
-        final JSlider humidSlider = new JSlider(0, 20);
+        final JSlider humidSlider = new JSlider(1, 21);
         humidSlider.setMajorTickSpacing(5);
         humidSlider.setMinorTickSpacing(1);
         humidSlider.setPaintTicks(true);
@@ -350,7 +350,7 @@ public class Assignment5Test {
         sliderPanel.add(soilSliderPanel);
         sliderPanel.add(humidSliderPanel);
 
-        //Cretae a panel for the buttons
+        //Create a panel for the buttons
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(4, 1));
 
@@ -442,6 +442,18 @@ public class Assignment5Test {
         loadFrame.setSize(150, 150);
         loadFrame.setVisible(false);
 
+        // Sets the default initial values for the settings
+        initialGHTempField.setText("20");
+        heatingRateField.setText("5");
+        coolingRateField.setText("5");
+        ambientTempRateField.setText("5");
+        initialGHSoilField.setText("20");
+        moistureRateField.setText("5");
+        dryingRateField.setText("5");
+        initialGHHumidField.setText("35");
+        humidRateField.setText("5");
+        aridRateField.setText("5");
+
         class SlidingClickingListener implements ActionListener, ChangeListener {
             //Booleans telling whether a machine is on or not
             private boolean ac = false, furn = false, spk = false, hum = false;
@@ -484,10 +496,10 @@ public class Assignment5Test {
 
                 if (hum) {
                     humidActivatedLabel.setBackground(GREEN);
-                    humidActivatedLabel.setText(" HUMIDIFER: ACTIVE");
+                    humidActivatedLabel.setText(" HUMIDIFIER: ACTIVE");
                 } else {
                     humidActivatedLabel.setBackground(RED);
-                    humidActivatedLabel.setText(" HUMIDIFER: NOT ACTIVE");
+                    humidActivatedLabel.setText(" HUMIDIFIER: NOT ACTIVE");
                 }
 
             }
@@ -528,46 +540,47 @@ public class Assignment5Test {
 
                     GHE = new GreenHouseEnvironment(initialTemp, initialSoil, initialHumid);
 
-                    //initialize the GreenHouse thread
-                    double ambientTemp = Double.parseDouble(ambientTempRateField.getText());
-                    double ambientSoil = (Double.parseDouble(dryingRateField.getText())) * -1; //negate it
-                    double ambientArid = (Double.parseDouble(aridRateField.getText())) * -1;
-
-                    GThread = new GreenHouseThread(ambientTemp, ambientSoil, ambientArid);
-
                     //Initialize the temperature thread
                     double furnaceRate = Double.parseDouble(heatingRateField.getText());
                     double coolingRate = Double.parseDouble(coolingRateField.getText()) * -1;
                     double upperLimitTemp = Double.parseDouble(tempRangeField.getText()) + 3;
                     double lowerLimitTemp = Double.parseDouble(tempRangeField.getText()) - 3;
+                    double ambientTemp = Double.parseDouble(ambientTempRateField.getText());
 
                     tempSensor = new TempThread(upperLimitTemp, lowerLimitTemp, furnaceRate,
-                            coolingRate, GHE);
+                            coolingRate, ambientTemp, GHE);
 
                     //Initialize the soil thread
-                    double mositureRate = Double.parseDouble(moistureRateField.getText());
+                    double moistureRate = Double.parseDouble(moistureRateField.getText());
                     double upperLimitSoil = Double.parseDouble(soilRangeField2.getText());
                     double lowerLimitSoil = Double.parseDouble(soilRangeField.getText());
+                    double ambientSoil = (Double.parseDouble(dryingRateField.getText())) * -1; //negate it
 
-                    soilSensor = new SoilThread(upperLimitSoil, lowerLimitSoil, mositureRate, GHE);
+                    soilSensor = new SoilThread(upperLimitSoil, lowerLimitSoil, moistureRate, ambientSoil, GHE);
 
                     //Initialize the humid thread
                     double humidRate = Double.parseDouble(humidRateField.getText());
                     double upperLimitHumid = Double.parseDouble(humidRangeField2.getText());
                     double lowerLimitHumid = Double.parseDouble(humidRangeField.getText());
+                    double ambientArid = (Double.parseDouble(aridRateField.getText())) * -1;
 
-                    humidSensor = new HumidThread(upperLimitHumid, lowerLimitHumid, humidRate, GHE);
+                    humidSensor = new HumidThread(upperLimitHumid, lowerLimitHumid, humidRate, ambientArid, GHE);
 
-                    //START THE THREADS
+                    //initialize the GreenHouse thread
+                    GThread = new GreenHouseThread(GHE, tempSensor, humidSensor, soilSensor, currentTempLabelAmount, currentSoilLabelAmount, currentHumidLabelAmount);
 
+                    // Starts the Threads
+                    GThread.runSubThreads();
                 }
 
                 if (bc.getSource().equals(loadf)) {
                     loadFrame.setVisible(true);
+                    // TODO Get the last saved simulation's file name and automatically have it selected at the default file to load
                 }
 
                 if (bc.getSource().equals(savef)) {
                     saveFrame.setVisible(true);
+                    // TODO Get the last saved simulation's file name and increment the file index counter
                 }
                 if (bc.getSource().equals(stop)) {
                     simulation.setEnabled(true);
@@ -594,17 +607,19 @@ public class Assignment5Test {
                     initialGHHumidField.setEditable(true);
                     humidRateField.setEditable(true);
                     aridRateField.setEditable(true);
-                    //STOP THREADS HERE
+
+                    //Stops Threads
+                    GThread.disableSubThreads();
                 }
 
                 if (bc.getSource().equals(load)) {
                     loadFrame.setVisible(false);
-                    //DO LOADING OF FILES IN HERE
+                    // TODO Loading simulation
                 }
 
                 if (bc.getSource().equals(save)) {
                     saveFrame.setVisible(false);
-                    //DO SAVING OF FILES HERE
+                    // TODO Saving simulation
                 }
 
             }
@@ -612,17 +627,18 @@ public class Assignment5Test {
             public void stateChanged(ChangeEvent sl) {
                 JSlider srcSlider = (JSlider) sl.getSource();
 
+                // TODO Fix crashing when setting slider values BEFORE starting a simulation
                 if (srcSlider.getValueIsAdjusting() == false) {
                     if (srcSlider.equals(tempSlider)) {
-                        //SAVE TEMP NOTE THEY INPUT SECONDS. CONVERT TO MILLI!
+                        GHE.tempChangeRate = tempSlider.getValue();
                     }
 
                     if (srcSlider.equals(soilSlider)) {
-                        //SAVE SOIL NOTE THEY INPUT SECONDS. CONVERT TO MILLI!
+                        GHE.soilChangeRate = soilSlider.getValue();
                     }
 
                     if (srcSlider.equals(humidSlider)) {
-                        //SAVE HUMID NOTE THEY INPUT SECONDS. CONVERT TO MILLI!
+                        GHE.humidChangeRate = humidSlider.getValue();
                     }
                 }
             }

@@ -1,7 +1,7 @@
 package Assignment5;
 
-public class SoilThread implements Runnable {
-    //The sprinkler rate
+public class SoilThread extends Thread {
+    //The sprinkler rate in seconds
     private double rate;
 
     //The limits
@@ -10,6 +10,9 @@ public class SoilThread implements Runnable {
 
     //Will get this using the limits
     private double target;
+
+    //Ambient rate
+    private double soilRate = 10;
 
     //Common location to store data
     private GreenHouseEnvironment GHE;
@@ -23,14 +26,16 @@ public class SoilThread implements Runnable {
      * @param UL Upper Limit of allowed soil moisture
      * @param LL Lower Limit of allowed soil moisture
      * @param r  Rate at which sprinkler restores soil moisture
-     * @param g  the collective Greenhouse environement
+     * @param sr rate at which air becomes more arid, will be negative
+     * @param g  the collective Greenhouse environment
      */
-    public SoilThread(double UL, double LL, double r, GreenHouseEnvironment g) {
+    public SoilThread(double UL, double LL, double r, double sr, GreenHouseEnvironment g) {
         super();
-        rate = r;
+        rate = r / 60;
         upperLimit = UL;
         lowerLimit = LL;
         target = (UL - 3);
+        soilRate = sr;
         GHE = g;
     }
 
@@ -44,6 +49,9 @@ public class SoilThread implements Runnable {
     }
 
     public void run() {
+        while (GHE.runSubThreads == true) {
 
+        }
+        return;
     }
 }
