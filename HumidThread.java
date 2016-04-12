@@ -85,7 +85,7 @@ public class HumidThread extends Thread {
                 GHE.changeHumidity(GHE.humidity() + rate * GHE.humidChangeRate);
 
                 // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.humidity() >= upperLimit - ambientHumidRate * GHE.humidChangeRate - rate * GHE.humidChangeRate) {
+                if (GHE.humidity() >= upperLimit - Math.abs(ambientHumidRate) * GHE.humidChangeRate - Math.abs(rate) * GHE.humidChangeRate) {
                     reachLowerLimit = true;
                     reachUpperLimit = false;
                 }
@@ -93,7 +93,7 @@ public class HumidThread extends Thread {
                 humid = false;
 
                 // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.humidity() <= lowerLimit + ambientHumidRate * GHE.humidChangeRate) {
+                if (GHE.humidity() <= lowerLimit + Math.abs(ambientHumidRate) * GHE.humidChangeRate) {
                     reachLowerLimit = false;
                     reachUpperLimit = true;
                 }

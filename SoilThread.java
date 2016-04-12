@@ -85,7 +85,7 @@ public class SoilThread extends Thread {
                 GHE.changeSoil(GHE.soilMoisture() + rate * GHE.soilChangeRate);
 
                 // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.soilMoisture() >= upperLimit - ambientSoilRate * GHE.soilChangeRate - rate * GHE.soilChangeRate) {
+                if (GHE.soilMoisture() >= upperLimit - Math.abs(ambientSoilRate) * GHE.soilChangeRate - Math.abs(rate) * GHE.soilChangeRate) {
                     reachLowerLimit = true;
                     reachUpperLimit = false;
                 }
@@ -93,7 +93,7 @@ public class SoilThread extends Thread {
                 sprink = false;
 
                 // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.soilMoisture() <= lowerLimit + ambientSoilRate * GHE.soilChangeRate) {
+                if (GHE.soilMoisture() <= lowerLimit + Math.abs(ambientSoilRate) * GHE.soilChangeRate) {
                     reachLowerLimit = false;
                     reachUpperLimit = true;
                 }

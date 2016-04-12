@@ -102,7 +102,7 @@ public class TempThread extends Thread {
                 GHE.changeTemp(GHE.temperature() + heatingRate * GHE.tempChangeRate);
 
                 // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.temperature() >= upperLimit - ambientTempRate * GHE.tempChangeRate - heatingRate * GHE.tempChangeRate) {
+                if (GHE.temperature() >= upperLimit - Math.abs(ambientTempRate) * GHE.tempChangeRate - Math.abs(heatingRate) * GHE.tempChangeRate) {
                     reachLowerLimit = true;
                     reachUpperLimit = false;
                 }
@@ -112,7 +112,7 @@ public class TempThread extends Thread {
                 GHE.changeTemp(GHE.temperature() + coolingRate * GHE.tempChangeRate);
 
                 // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.temperature() <= lowerLimit + ambientTempRate * GHE.tempChangeRate + coolingRate * GHE.tempChangeRate) {
+                if (GHE.temperature() <= lowerLimit + Math.abs(ambientTempRate) * GHE.tempChangeRate + Math.abs(coolingRate) * GHE.tempChangeRate) {
                     reachLowerLimit = false;
                     reachUpperLimit = true;
                 }
