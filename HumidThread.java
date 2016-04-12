@@ -1,5 +1,15 @@
 package Assignment5;
 
+/**
+ * Assignment 5
+ * Course: CPSC 233
+ * Prof: Manzara
+ * UCID: 30002229 & 30008424
+ * TA session: 03
+ *
+ * @author Asjad Hassan Malick & Sharjeel Junaid
+ */
+
 public class HumidThread extends Thread {
     //The humidifier rate in seconds
     private double rate;
@@ -8,11 +18,8 @@ public class HumidThread extends Thread {
     private double upperLimit;
     private double lowerLimit;
 
-    //Will get this using the limits
-    private double target;
-
     //Ambient rate
-    private double humidRate = 10;
+    private double ambientHumidRate = 10;
 
     //Common location to store data
     private GreenHouseEnvironment GHE;
@@ -34,8 +41,7 @@ public class HumidThread extends Thread {
         rate = r / 60;
         upperLimit = UL;
         lowerLimit = LL;
-        target = (UL - 3);
-        humidRate = hr;
+        ambientHumidRate = hr / 60;
         GHE = g;
     }
 
@@ -49,8 +55,55 @@ public class HumidThread extends Thread {
     }
 
     public void run() {
-        while (GHE.runSubThreads == true) {
+        // Puts the thread to sleep till the next update interval
+        try {
+            Thread.sleep((long) (GHE.humidChangeRate * 1000));
+        } catch (InterruptedException e) {
+        }
 
+        // Booleans to determine whether the humidifier should be on or not
+        boolean reachLowerLimit = false;
+        boolean reachUpperLimit = false;
+
+        // Checks to see where the initial humidity is to update the booleans
+        if (GHE.humidity() > lowerLimit) {
+            reachLowerLimit = true;
+            reachUpperLimit = false;
+        } else if (GHE.humidity() < lowerLimit) {
+            reachLowerLimit = false;
+            reachUpperLimit = true;
+        }
+
+        // Only runs the thread code when the thread is allowed to run
+        while (GHE.runSubThreads == true) {
+            // Applies the natural change in humidity to the value
+            GHE.changeHumidity(GHE.humidity() + ambientHumidRate * GHE.humidChangeRate);
+
+            // Checks to see whether it is better to turn the humidifier on or not & performs the appropriate adjustments
+            if (reachUpperLimit == true) {
+                humid = true;
+                GHE.changeHumidity(GHE.humidity() + rate * GHE.humidChangeRate);
+
+                // Checks to see if the upper limit is about to get hit to change the boolean
+                if (GHE.humidity() >= upperLimit - ambientHumidRate * GHE.humidChangeRate - rate * GHE.humidChangeRate) {
+                    reachLowerLimit = true;
+                    reachUpperLimit = false;
+                }
+            } else if (reachLowerLimit == true) {
+                humid = false;
+
+                // Checks to see if the upper limit is about to get hit to change the boolean
+                if (GHE.humidity() <= lowerLimit + ambientHumidRate * GHE.humidChangeRate) {
+                    reachLowerLimit = false;
+                    reachUpperLimit = true;
+                }
+            }
+
+            // Puts the thread to sleep till the next update interval
+            try {
+                Thread.sleep((long) (GHE.humidChangeRate * 1000));
+            } catch (InterruptedException e) {
+            }
         }
         return;
     }

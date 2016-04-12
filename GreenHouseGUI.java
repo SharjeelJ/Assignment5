@@ -1,4 +1,5 @@
 package Assignment5;
+
 /**
  * Assignment 5
  * Course: CPSC 233
@@ -16,7 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Assignment5Test {
+public class GreenHouseGUI {
     public static void main(String args[]) {
         //THE COLOR CONSTANTS
         final Color RED = new Color(188, 0, 0);
@@ -455,54 +456,17 @@ public class Assignment5Test {
         aridRateField.setText("5");
 
         class SlidingClickingListener implements ActionListener, ChangeListener {
-            //Booleans telling whether a machine is on or not
-            private boolean ac = false, furn = false, spk = false, hum = false;
-
             private GreenHouseEnvironment GHE;
-
             private GreenHouseThread GThread;
-
             private TempThread tempSensor;
-
             private SoilThread soilSensor;
-
             private HumidThread humidSensor;
 
-            //METHOD TO SWITCH THE COLORS AND ACTIVE STATUS OF MACHINES
-            private void colorSwitch() {
-                if (ac) {
-                    ACActivatedLabel.setBackground(GREEN);
-                    ACActivatedLabel.setText(" AIR CONDITIONER: ACTIVE");
-                } else {
-                    ACActivatedLabel.setBackground(RED);
-                    ACActivatedLabel.setText(" AIR CONDITIONER: NOT ACTIVE");
-                }
+            // Stores the sliders update time values
+            private double tempChangeRate = tempSlider.getValue();
+            private double soilChangeRate = soilSlider.getValue();
+            private double humidChangeRate = humidSlider.getValue();
 
-                if (furn) {
-                    furnaceActivatedLabel.setBackground(GREEN);
-                    furnaceActivatedLabel.setText(" FURNACE: ACTIVE");
-                } else {
-                    furnaceActivatedLabel.setBackground(RED);
-                    furnaceActivatedLabel.setText(" FURNACE: NOT ACTIVE");
-                }
-
-                if (spk) {
-                    sprinklerActivatedLabel.setBackground(GREEN);
-                    sprinklerActivatedLabel.setText(" SPRINKLER: ACTIVE");
-                } else {
-                    sprinklerActivatedLabel.setBackground(RED);
-                    sprinklerActivatedLabel.setText(" SPRINKLER: NOT ACTIVE");
-                }
-
-                if (hum) {
-                    humidActivatedLabel.setBackground(GREEN);
-                    humidActivatedLabel.setText(" HUMIDIFIER: ACTIVE");
-                } else {
-                    humidActivatedLabel.setBackground(RED);
-                    humidActivatedLabel.setText(" HUMIDIFIER: NOT ACTIVE");
-                }
-
-            }
 
             public void actionPerformed(ActionEvent bc) {
                 if (bc.getSource().equals(simulation)) {
@@ -510,6 +474,8 @@ public class Assignment5Test {
                     //disable and enable certain fields and buttons
                     simulation.setEnabled(false);
                     stop.setEnabled(true);
+                    savef.setEnabled(false);
+                    loadf.setEnabled(false);
 
                     tempRangeField.setEditable(false);
 
@@ -567,7 +533,10 @@ public class Assignment5Test {
                     humidSensor = new HumidThread(upperLimitHumid, lowerLimitHumid, humidRate, ambientArid, GHE);
 
                     //initialize the GreenHouse thread
-                    GThread = new GreenHouseThread(GHE, tempSensor, humidSensor, soilSensor, currentTempLabelAmount, currentSoilLabelAmount, currentHumidLabelAmount);
+                    GThread = new GreenHouseThread(GHE, tempSensor, humidSensor, soilSensor, currentTempLabelAmount, currentSoilLabelAmount, currentHumidLabelAmount, ACActivatedLabel, furnaceActivatedLabel, sprinklerActivatedLabel, humidActivatedLabel);
+                    GHE.tempChangeRate = tempChangeRate;
+                    GHE.soilChangeRate = soilChangeRate;
+                    GHE.humidChangeRate = humidChangeRate;
 
                     // Starts the Threads
                     GThread.runSubThreads();
@@ -585,6 +554,8 @@ public class Assignment5Test {
                 if (bc.getSource().equals(stop)) {
                     simulation.setEnabled(true);
                     stop.setEnabled(false);
+                    savef.setEnabled(true);
+                    loadf.setEnabled(true);
 
                     tempRangeField.setEditable(true);
 
@@ -627,18 +598,28 @@ public class Assignment5Test {
             public void stateChanged(ChangeEvent sl) {
                 JSlider srcSlider = (JSlider) sl.getSource();
 
-                // TODO Fix crashing when setting slider values BEFORE starting a simulation
+                // Updates the thread update frequencies based on the slider values
                 if (srcSlider.getValueIsAdjusting() == false) {
                     if (srcSlider.equals(tempSlider)) {
-                        GHE.tempChangeRate = tempSlider.getValue();
+                        if (GHE == null) {
+                            tempChangeRate = tempSlider.getValue();
+                        } else {
+                            GHE.tempChangeRate = tempSlider.getValue();
+                        }
                     }
-
                     if (srcSlider.equals(soilSlider)) {
-                        GHE.soilChangeRate = soilSlider.getValue();
+                        if (GHE == null) {
+                            soilChangeRate = soilSlider.getValue();
+                        } else {
+                            GHE.soilChangeRate = soilSlider.getValue();
+                        }
                     }
-
                     if (srcSlider.equals(humidSlider)) {
-                        GHE.humidChangeRate = humidSlider.getValue();
+                        if (GHE == null) {
+                            humidChangeRate = humidSlider.getValue();
+                        } else {
+                            GHE.humidChangeRate = humidSlider.getValue();
+                        }
                     }
                 }
             }

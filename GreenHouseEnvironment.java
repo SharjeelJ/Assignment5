@@ -1,14 +1,18 @@
 package Assignment5;
 
+import java.util.ArrayList;
+
 public class GreenHouseEnvironment {
     //The shared values
     private double temperature = 0;
     private double soilMoisture = 0;
     private double humidity = 0;
-    public double tempChangeRate = 11;
-    public double humidChangeRate = 11;
-    public double soilChangeRate = 11;
-    public boolean runSubThreads = false;
+    protected double tempChangeRate = 11;
+    protected double humidChangeRate = 11;
+    protected double soilChangeRate = 11;
+    protected boolean runSubThreads = false;
+    protected ArrayList <String> logData = new ArrayList();
+
 
     /**
      * Constructor for an environment
