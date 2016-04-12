@@ -99,6 +99,9 @@ public class HumidThread extends Thread {
                 }
             }
 
+            // Adds the data into the ArrayList to log the simulation
+            GHE.logData.add("HUMIDITY: " + Double.toString(GHE.humidity()));
+
             // Puts the thread to sleep till the next update interval
             try {
                 Thread.sleep((long) (GHE.humidChangeRate * 1000));

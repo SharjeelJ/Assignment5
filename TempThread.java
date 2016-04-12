@@ -118,6 +118,9 @@ public class TempThread extends Thread {
                 }
             }
 
+            // Adds the data into the ArrayList to log the simulation
+            GHE.logData.add("TEMPERATURE: " + Double.toString(GHE.temperature()));
+
             // Puts the thread to sleep till the next update interval
             try {
                 Thread.sleep((long) (GHE.tempChangeRate * 1000));

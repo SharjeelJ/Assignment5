@@ -99,6 +99,9 @@ public class SoilThread extends Thread {
                 }
             }
 
+            // Adds the data into the ArrayList to log the simulation
+            GHE.logData.add("SOIL-MOISTURE: " + Double.toString(GHE.soilMoisture()));
+
             // Puts the thread to sleep till the next update interval
             try {
                 Thread.sleep((long) (GHE.soilChangeRate * 1000));

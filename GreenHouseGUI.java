@@ -16,6 +16,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GreenHouseGUI {
     public static void main(String args[]) {
@@ -591,6 +593,23 @@ public class GreenHouseGUI {
                 if (bc.getSource().equals(save)) {
                     saveFrame.setVisible(false);
                     // TODO Saving simulation
+                    try {
+                        // File Path Of The File To Append The Data To
+                        String finalFile = "Simulation Log.txt";
+
+                        // Initializes file writing utility
+                        FileWriter fileWriter = null;
+
+                        fileWriter = new FileWriter(finalFile);
+                        // Loops through and prints out the logged data from the ArrayList to the log file
+                        for (int counter = 0; counter < GHE.logData.size(); counter++) {
+                            // Appends the data to the file
+                            fileWriter.write("\n" + GHE.logData.get(counter));
+                        }
+                        // Closes the file writing utility
+                        fileWriter.close();
+                    } catch (IOException e) {
+                    }
                 }
 
             }
