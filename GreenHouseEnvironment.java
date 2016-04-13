@@ -1,9 +1,19 @@
 package Assignment5;
 
+/**
+ * Assignment 5
+ * Course: CPSC 233
+ * Prof: Manzara
+ * UCID: 30002229 & 30008424
+ * TA session: 03
+ *
+ * @author Asjad Hassan Malick & Sharjeel Junaid
+ */
+
 import java.util.ArrayList;
 
 public class GreenHouseEnvironment {
-    //The shared values
+    // The shared values
     private double temperature = 0;
     private double soilMoisture = 0;
     private double humidity = 0;
@@ -17,9 +27,9 @@ public class GreenHouseEnvironment {
     /**
      * Constructor for an environment
      *
-     * @param t the initial temperature
-     * @param s the initial soil moisture
-     * @param h the initial humidity
+     * @param t The initial temperature
+     * @param s The initial soil moisture
+     * @param h The initial humidity
      */
     public GreenHouseEnvironment(double t, double s, double h) {
         temperature = t;
@@ -28,7 +38,7 @@ public class GreenHouseEnvironment {
     }
 
     /**
-     * returns current temperature
+     * Returns current temperature
      *
      * @return double - temperature
      */
@@ -37,7 +47,7 @@ public class GreenHouseEnvironment {
     }
 
     /**
-     * returns current soilMoisture
+     * Returns current soilMoisture
      *
      * @return double - soilMoisture
      */
@@ -46,7 +56,7 @@ public class GreenHouseEnvironment {
     }
 
     /**
-     * returns current humidity
+     * Returns current humidity
      *
      * @return double - humidity
      */
