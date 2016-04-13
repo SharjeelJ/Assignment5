@@ -11,33 +11,32 @@ package Assignment5;
  */
 
 public class SoilThread extends Thread {
-    //The sprinkler rate in seconds
+    // The sprinkler rate per second
     private double rate;
 
-    //The limits
+    // The upper and lower soil moisture limits
     private double upperLimit;
     private double lowerLimit;
 
-    //Ambient rate
-    private double ambientSoilRate = 10;
+    // Ambient change rate per second
+    private double ambientSoilRate;
 
-    //Common location to store data
+    // Common location to store data
     private GreenHouseEnvironment GHE;
 
-    //Tells whether or not sprinkler is on
+    // Boolean to indicate if the sprinkler is on
     private boolean sprink = false;
 
     /**
-     * The constructor for a soil thread
+     * The constructor for a soil moisture thread
      *
      * @param UL Upper Limit of allowed soil moisture
      * @param LL Lower Limit of allowed soil moisture
      * @param r  Rate at which sprinkler restores soil moisture
-     * @param sr rate at which air becomes more arid, will be negative
-     * @param g  the collective Greenhouse environment
+     * @param sr Rate at which air becomes more arid
+     * @param g  The collective Greenhouse environment
      */
     public SoilThread(double UL, double LL, double r, double sr, GreenHouseEnvironment g) {
-        super();
         rate = r / 60;
         upperLimit = UL;
         lowerLimit = LL;
@@ -46,7 +45,7 @@ public class SoilThread extends Thread {
     }
 
     /**
-     * boolean to tell whether or not sprinkler is active. true if it is on
+     * Returns whether or not sprinkler is on. True if it is.
      *
      * @return boolean - sprink
      */
@@ -54,6 +53,9 @@ public class SoilThread extends Thread {
         return sprink;
     }
 
+    /**
+     * Main method to run the threaded program code
+     */
     public void run() {
         // Puts the thread to sleep till the next update interval
         try {
@@ -66,10 +68,10 @@ public class SoilThread extends Thread {
         boolean reachUpperLimit = false;
 
         // Checks to see where the initial soil moisture is to update the booleans
-        if (GHE.soilMoisture() > lowerLimit) {
+        if (GHE.soilMoisture() >= lowerLimit) {
             reachLowerLimit = true;
             reachUpperLimit = false;
-        } else if (GHE.soilMoisture() < lowerLimit) {
+        } else if (GHE.soilMoisture() <= lowerLimit) {
             reachLowerLimit = false;
             reachUpperLimit = true;
         }
@@ -97,6 +99,13 @@ public class SoilThread extends Thread {
                     reachLowerLimit = false;
                     reachUpperLimit = true;
                 }
+            }
+
+            // Checks to make sure that the soil moisture value is never less than 0 or greater than 100
+            if (GHE.soilMoisture() < 0) {
+                GHE.changeSoil(0);
+            } else if (GHE.soilMoisture() > 100) {
+                GHE.changeSoil(100);
             }
 
             // Adds the data into the ArrayList to log the simulation

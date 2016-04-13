@@ -11,33 +11,32 @@ package Assignment5;
  */
 
 public class HumidThread extends Thread {
-    //The humidifier rate in seconds
+    // The humidifier rate per second
     private double rate;
 
-    //The limits
+    // The upper and lower limits
     private double upperLimit;
     private double lowerLimit;
 
-    //Ambient rate
-    private double ambientHumidRate = 10;
+    // Ambient change rate per second
+    private double ambientHumidRate;
 
-    //Common location to store data
+    // Common location to store data
     private GreenHouseEnvironment GHE;
 
-    //Tells if the humidifier is on
+    // Boolean to indicate if the humidifier is on
     private boolean humid = false;
 
     /**
-     * The constructor for a humid thread
+     * The constructor for a humidity thread
      *
-     * @param UL Upper Limit of allowed soil moisture
-     * @param LL Lower Limit of allowed soil moisture
+     * @param UL Upper Limit of allowed humidity
+     * @param LL Lower Limit of allowed humidity
      * @param r  Rate at which humidifier restores humidity
-     * @param hr rate at which soil dries up, will be negative
-     * @param g  the collective Greenhouse environment
+     * @param hr Rate at which soil dries up
+     * @param g  The collective Greenhouse environment
      */
     public HumidThread(double UL, double LL, double r, double hr, GreenHouseEnvironment g) {
-        super();
         rate = r / 60;
         upperLimit = UL;
         lowerLimit = LL;
@@ -46,7 +45,7 @@ public class HumidThread extends Thread {
     }
 
     /**
-     * Tells whether or not humidifier is on, true if it is
+     * Returns whether or not humidifier is on. True if it is.
      *
      * @return boolean - humid
      */
@@ -54,6 +53,9 @@ public class HumidThread extends Thread {
         return humid;
     }
 
+    /**
+     * Main method to run the threaded program code
+     */
     public void run() {
         // Puts the thread to sleep till the next update interval
         try {
@@ -66,10 +68,10 @@ public class HumidThread extends Thread {
         boolean reachUpperLimit = false;
 
         // Checks to see where the initial humidity is to update the booleans
-        if (GHE.humidity() > lowerLimit) {
+        if (GHE.humidity() >= lowerLimit) {
             reachLowerLimit = true;
             reachUpperLimit = false;
-        } else if (GHE.humidity() < lowerLimit) {
+        } else if (GHE.humidity() <= lowerLimit) {
             reachLowerLimit = false;
             reachUpperLimit = true;
         }
@@ -97,6 +99,13 @@ public class HumidThread extends Thread {
                     reachLowerLimit = false;
                     reachUpperLimit = true;
                 }
+            }
+
+            // Checks to make sure that the humidity value is never less than 0 or greater than 100
+            if (GHE.humidity() < 0) {
+                GHE.changeHumidity(0);
+            } else if (GHE.humidity() > 100) {
+                GHE.changeHumidity(100);
             }
 
             // Adds the data into the ArrayList to log the simulation

@@ -25,7 +25,7 @@ public class GreenHouseThread extends Thread {
     private HumidThread humidityController;
     private SoilThread soilMoistureController;
 
-    // JLabels for each of the GUI's current greenhouse readings / elements
+    // JLabels for each of the GUI's current greenhouse environment readings / elements
     private JLabel currentTempReading;
     private JLabel currentSoilReading;
     private JLabel currentHumidityReading;
@@ -65,7 +65,7 @@ public class GreenHouseThread extends Thread {
     }
 
     /**
-     * Method to enable running all the subthreads
+     * Method to enable running all the sub-threads
      */
     public void runSubThreads() {
         greenhouseEnvironment.runSubThreads = true;
@@ -73,13 +73,17 @@ public class GreenHouseThread extends Thread {
     }
 
     /**
-     * Method to disable running all the subthreads
+     * Method to disable running all the sub-threads
      */
     public void disableSubThreads() {
         greenhouseEnvironment.runSubThreads = false;
     }
 
+    /**
+     * Main method to run the threaded program code
+     */
     public void run() {
+        // Starts running all 3 remaining greenhouse threads
         temperatureController.start();
         humidityController.start();
         soilMoistureController.start();
@@ -89,6 +93,7 @@ public class GreenHouseThread extends Thread {
             // Initialize decimal formatter to strip down to only a certain number of decimal places
             DecimalFormat decimals = new DecimalFormat("#.##");
             decimals.format(greenhouseEnvironment.temperature());
+
             // Updates the Temperature elements in the GUI
             currentTempReading.setText(decimals.format(greenhouseEnvironment.temperature()).toString());
             if (temperatureController.isFurnON()) {
@@ -126,6 +131,7 @@ public class GreenHouseThread extends Thread {
                 currentHumidifierStatus.setText(" HUMIDIFIER: INACTIVE");
             }
         }
+
         // Disables all the greenhouse elements when the thread has been given the stop command
         currentFurnaceStatus.setBackground(RED);
         currentFurnaceStatus.setText(" FURNACE: INACTIVE");
@@ -135,7 +141,6 @@ public class GreenHouseThread extends Thread {
         currentSprinklerStatus.setText(" SPRINKLER: INACTIVE");
         currentHumidifierStatus.setBackground(RED);
         currentHumidifierStatus.setText(" HUMIDIFIER: INACTIVE");
-
         return;
     }
 

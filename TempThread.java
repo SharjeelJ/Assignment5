@@ -11,24 +11,24 @@ package Assignment5;
  */
 
 public class TempThread extends Thread {
-    //AC and furnace rates in seconds
+    // AC and furnace rates per second
     private double heatingRate;
     private double coolingRate;
 
-    //The limits
+    // The upper and lower temperature limits
     private double upperLimit;
     private double lowerLimit;
 
-    //Will get this using the limits
+    // Target / ideal temperature
     private double target;
 
-    // Ambient rate
+    // Ambient change rate per second
     private double ambientTempRate;
 
-    //Common location to store data
+    // Common location to store data
     private GreenHouseEnvironment GHE;
 
-    //Boolean to indicate if furnace & ac are on
+    // Boolean to indicate if the furnace & AC are on
     private boolean furn = false;
     private boolean ac = false;
 
@@ -38,7 +38,7 @@ public class TempThread extends Thread {
      * @param UL Upper Limit for temperature
      * @param LL Lower Limit for temperature
      * @param hr Heating rate of furnace
-     * @param cr Cooling Rate of AC (negative value)
+     * @param cr Cooling Rate of AC
      * @param ar Ambient change rate
      * @param g  The collective greenhouse environment
      */
@@ -53,7 +53,7 @@ public class TempThread extends Thread {
     }
 
     /**
-     * returns whether or not furnace is on. True if it is.
+     * Returns whether or not furnace is on. True if it is.
      *
      * @return boolean - furn
      */
@@ -62,7 +62,7 @@ public class TempThread extends Thread {
     }
 
     /**
-     * returns whether or not ac is on. True if it is.
+     * Returns whether or not ac is on. True if it is.
      *
      * @return boolean - ac
      */
@@ -70,6 +70,9 @@ public class TempThread extends Thread {
         return ac;
     }
 
+    /**
+     * Main method to run the threaded program code
+     */
     public void run() {
         // Puts the thread to sleep till the next update interval
         try {
@@ -97,24 +100,48 @@ public class TempThread extends Thread {
 
             // Checks to see whether it is better to turn the AC on or the furnace & performs the appropriate adjustments
             if (reachUpperLimit == true) {
-                furn = true;
-                ac = false;
-                GHE.changeTemp(GHE.temperature() + heatingRate * GHE.tempChangeRate);
+                // Checks to see if the ambient rate is capable of heating by itself
+                if (ambientTempRate > 0 && GHE.temperature() >= lowerLimit) {
+                    furn = false;
+                    ac = false;
 
-                // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.temperature() >= upperLimit - Math.abs(ambientTempRate) * GHE.tempChangeRate - Math.abs(heatingRate) * GHE.tempChangeRate) {
-                    reachLowerLimit = true;
-                    reachUpperLimit = false;
+                    // Checks to see if the upper limit is about to get hit to change the boolean
+                    if (GHE.temperature() >= upperLimit - Math.abs(ambientTempRate) * GHE.tempChangeRate) {
+                        reachLowerLimit = true;
+                        reachUpperLimit = false;
+                    }
+                } else if (GHE.temperature() <= lowerLimit || ambientTempRate < 0) {
+                    furn = true;
+                    ac = false;
+                    GHE.changeTemp(GHE.temperature() + heatingRate * GHE.tempChangeRate);
+
+                    // Checks to see if the upper limit is about to get hit to change the boolean
+                    if (GHE.temperature() >= upperLimit - Math.abs(ambientTempRate) * GHE.tempChangeRate - Math.abs(heatingRate) * GHE.tempChangeRate) {
+                        reachLowerLimit = true;
+                        reachUpperLimit = false;
+                    }
                 }
             } else if (reachLowerLimit == true) {
-                furn = false;
-                ac = true;
-                GHE.changeTemp(GHE.temperature() + coolingRate * GHE.tempChangeRate);
+                // Checks to see if the ambient rate is capable of cooling by itself
+                if (ambientTempRate < 0 && GHE.temperature() <= upperLimit) {
+                    furn = false;
+                    ac = false;
 
-                // Checks to see if the upper limit is about to get hit to change the boolean
-                if (GHE.temperature() <= lowerLimit + Math.abs(ambientTempRate) * GHE.tempChangeRate + Math.abs(coolingRate) * GHE.tempChangeRate) {
-                    reachLowerLimit = false;
-                    reachUpperLimit = true;
+                    // Checks to see if the lower limit is about to get hit to change the boolean
+                    if (GHE.temperature() <= lowerLimit + Math.abs(ambientTempRate) * GHE.tempChangeRate) {
+                        reachLowerLimit = false;
+                        reachUpperLimit = true;
+                    }
+                } else if (GHE.temperature() >= upperLimit || ambientTempRate > 0) {
+                    furn = false;
+                    ac = true;
+                    GHE.changeTemp(GHE.temperature() + coolingRate * GHE.tempChangeRate);
+
+                    // Checks to see if the lower limit is about to get hit to change the boolean
+                    if (GHE.temperature() <= lowerLimit + Math.abs(ambientTempRate) * GHE.tempChangeRate + Math.abs(coolingRate) * GHE.tempChangeRate) {
+                        reachLowerLimit = false;
+                        reachUpperLimit = true;
+                    }
                 }
             }
 
