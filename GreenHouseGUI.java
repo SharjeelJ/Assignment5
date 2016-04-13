@@ -16,12 +16,11 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class GreenHouseGUI {
     public static void main(String args[]) {
-        //THE COLOR CONSTANTS
+        // Colour constants
         final Color RED = new Color(188, 0, 0);
         final Color GREEN = new Color(45, 189, 16);
         final Color TEMP = new Color(102, 102, 255);
@@ -29,63 +28,63 @@ public class GreenHouseGUI {
         final Color HUMID = new Color(69, 167, 174);
         final Color GREY = new Color(195, 195, 195);
 
-        //GUI FRAME SETUP
+        // GUI frame setup
         final JFrame frame = new JFrame("GREENHOUSE SIMULATOR");
 
-        //GUI Panel setup
+        // GUI panel setup
         final JTabbedPane panel = new JTabbedPane();
 
-        //Contains the active labels, tells which system is active
+        // Contains the active labels, tells which system is active
         final JPanel westPanel = new JPanel();
         westPanel.setLayout(new GridLayout(4, 1));
 
-        //To be put on second tab panel, will have ranges
+        // To be put on second tab panel, will have ranges
         final JPanel northPanel = new JPanel();
         northPanel.setLayout(new GridLayout(3, 1));
 
-        //Tab for initial values
+        // Tab for initial values
         final JPanel firstTabPanel = new JPanel();
         firstTabPanel.setLayout(new BorderLayout());
 
-        //Tab that contains basically everything else
+        // Tab that contains basically everything else (output readings, frequency slides, target ranges)
         final JPanel secondTabPanel = new JPanel();
         secondTabPanel.setLayout(new BorderLayout());
 
         //**********************************************
-        //WEST PANEL
+        // WEST PANEL
         //**********************************************
 
-        //Create the label for the furnace, make it red
-        final JLabel furnaceActivatedLabel = new JLabel(" FURNACE: NOT ACTIVE");
+        // Create the label for the furnace, make it red
+        final JLabel furnaceActivatedLabel = new JLabel(" FURNACE: INACTIVE");
         furnaceActivatedLabel.setOpaque(true);
         furnaceActivatedLabel.setBackground(RED);
 
-        //Create the label for the air conditioner (AC), make it red
-        final JLabel ACActivatedLabel = new JLabel(" AIR CONDITIONER: NOT ACTIVE");
+        // Create the label for the air conditioner (AC), make it red
+        final JLabel ACActivatedLabel = new JLabel(" AIR CONDITIONER: INACTIVE");
         ACActivatedLabel.setOpaque(true);
         ACActivatedLabel.setBackground(RED);
 
-        //Create the label for the humidifier, make it red
-        final JLabel humidActivatedLabel = new JLabel(" HUMIDIFIER: NOT ACTIVE");
+        // Create the label for the humidifier, make it red
+        final JLabel humidActivatedLabel = new JLabel(" HUMIDIFIER: INACTIVE");
         humidActivatedLabel.setOpaque(true);
         humidActivatedLabel.setBackground(RED);
 
-        //Create the label for the sprinkler, make it red
-        final JLabel sprinklerActivatedLabel = new JLabel(" SPRINKLER: NOT ACTIVE");
+        // Create the label for the sprinkler, make it red
+        final JLabel sprinklerActivatedLabel = new JLabel(" SPRINKLER: INACTIVE");
         sprinklerActivatedLabel.setOpaque(true);
         sprinklerActivatedLabel.setBackground(RED);
 
-        //ADD THE LABELS TO THE PANEL
+        // Add the labels to the panel
         westPanel.add(furnaceActivatedLabel);
         westPanel.add(ACActivatedLabel);
         westPanel.add(humidActivatedLabel);
         westPanel.add(sprinklerActivatedLabel);
 
         //**********************************************
-        //NORTH PANEL
+        // NORTH PANEL
         //**********************************************
 
-        //Temperature settings
+        // Temperature settings
         final JPanel temperaturePanel = new JPanel();
         temperaturePanel.setLayout(new GridLayout(2, 1));
         final JLabel tempLabel = new JLabel("Temperature Settings");
@@ -101,7 +100,7 @@ public class GreenHouseGUI {
 
         final JTextField tempRangeField = new JTextField(2);
 
-        final JLabel tempPlusMin = new JLabel("+/-   3 degrees Celsius");
+        final JLabel tempPlusMin = new JLabel("+/-   3 Degrees Celsius");
         tempPlusMin.setOpaque(true);
         tempPlusMin.setBackground(TEMP);
 
@@ -130,7 +129,7 @@ public class GreenHouseGUI {
         final JTextField soilRangeField = new JTextField(2);
         final JTextField soilRangeField2 = new JTextField(2);
 
-        final JLabel soilPer1 = new JLabel("%          to ");
+        final JLabel soilPer1 = new JLabel("%          To ");
         soilPer1.setOpaque(true);
         soilPer1.setBackground(SOIL);
 
@@ -148,7 +147,7 @@ public class GreenHouseGUI {
         soilPanel.add(soilSettings);
 
 
-        //Humidity Settings
+        // Humidity Settings
         final JPanel humidPanel = new JPanel();
         humidPanel.setLayout(new GridLayout(2, 1));
         final JLabel humidLabel = new JLabel("Humidity Settings");
@@ -165,7 +164,7 @@ public class GreenHouseGUI {
         final JTextField humidRangeField = new JTextField(2);
         final JTextField humidRangeField2 = new JTextField(2);
 
-        final JLabel humidPer1 = new JLabel("%          to ");
+        final JLabel humidPer1 = new JLabel("%          To ");
         humidPer1.setOpaque(true);
         humidPer1.setBackground(HUMID);
 
@@ -182,39 +181,39 @@ public class GreenHouseGUI {
         humidPanel.add(humidLabel);
         humidPanel.add(humidSettings);
 
+        // Adds the newly created panels to the primary panel
         northPanel.add(temperaturePanel);
         northPanel.add(soilPanel);
         northPanel.add(humidPanel);
 
         //**********************************************
-        //TAB 1
+        // TAB 1
         //**********************************************
 
-        //Panel that is to be placed on the tab
+        // Panel that is to be placed on the tab
         final JPanel GHPanel = new JPanel();
         GHPanel.setLayout(new GridLayout(10, 2));
 
-        // Label to describe the functions of tab
-        final JLabel GHLabel = new JLabel("Initial Greenhouse settings");
+        // Label to describe the functions of the tab
+        final JLabel GHLabel = new JLabel("Initial Greenhouse Settings");
         Font font = GHLabel.getFont();
         Font italicFont = new Font(font.getName(), Font.ITALIC, font.getSize());
         GHLabel.setFont(italicFont);
         GHLabel.setOpaque(true);
         GHLabel.setBackground(GREEN);
 
-        //Label initializations for temperature
-        final JLabel heatingRateLabel = new JLabel("Rate of Heating (Celsius per minute):");
+        // Label initializations for temperature
+        final JLabel heatingRateLabel = new JLabel("Rate Of Heating (Celsius Per Minute):");
 
-        final JLabel coolingRateLabel = new JLabel("Rate of Cooling (Celsius per minute):");
+        final JLabel coolingRateLabel = new JLabel("Rate Of Cooling (Celsius Per Minute):");
 
-        final JLabel ambientTempRateLabel = new JLabel("Rate of ambient temperature "
-                + "(Celsius per minute):");
+        final JLabel ambientTempRateLabel = new JLabel("Rate Of Ambient Temperature " + "(Celsius Per Minute):");
 
-        final JLabel initialGHTempLabel = new JLabel(" Initial air Temperature: ");
+        final JLabel initialGHTempLabel = new JLabel(" Initial Air Temperature:");
         initialGHTempLabel.setOpaque(true);
         initialGHTempLabel.setBackground(TEMP);
 
-        //Field initializations for temperatures settings
+        // Field initializations for temperatures settings
         final JTextField heatingRateField = new JTextField(2);
         final JTextField coolingRateField = new JTextField(2);
         final JTextField ambientTempRateField = new JTextField(2);
@@ -222,7 +221,7 @@ public class GreenHouseGUI {
         final JTextField initialGHTempField = new JTextField(2);
         initialGHTempField.setBackground(GREY);
 
-        //ADD EVERYTHING TO THE MAIN PANEL
+        // Add everything to the main panel
         GHPanel.add(initialGHTempLabel);
         GHPanel.add(initialGHTempField);
         GHPanel.add(heatingRateLabel);
@@ -232,22 +231,22 @@ public class GreenHouseGUI {
         GHPanel.add(ambientTempRateLabel);
         GHPanel.add(ambientTempRateField);
 
-        //Label for soil settings
+        // Label for the soil settings
         final JLabel initialGHSoilLabel = new JLabel(" Initial Soil Moisture:");
         initialGHSoilLabel.setOpaque(true);
         initialGHSoilLabel.setBackground(SOIL);
 
-        final JLabel moistureRateLabel = new JLabel("Sprinkler moisturizing rate (% per minute):");
-        final JLabel dryingRateLabel = new JLabel("Ambient drying rate (% per minute):");
+        final JLabel moistureRateLabel = new JLabel("Sprinkler Moisturizing Rate (% Per Minute):");
+        final JLabel dryingRateLabel = new JLabel("Ambient Drying Rate (% Per Minute):");
 
-        //Fields for soil settings
+        // Fields for the soil settings
         final JTextField initialGHSoilField = new JTextField(2);
         initialGHSoilField.setBackground(GREY);
 
         final JTextField moistureRateField = new JTextField(2);
         final JTextField dryingRateField = new JTextField(2);
 
-        //ADD THEM TO THE PANEL
+        // Add the newly created soil elements to the main panel
         GHPanel.add(initialGHSoilLabel);
         GHPanel.add(initialGHSoilField);
         GHPanel.add(moistureRateLabel);
@@ -255,22 +254,22 @@ public class GreenHouseGUI {
         GHPanel.add(dryingRateLabel);
         GHPanel.add(dryingRateField);
 
-        //Humidifier setting labels
+        // Humidifier setting labels
         final JLabel initialGHHumidLabel = new JLabel(" Initial Air Humidity:");
         initialGHHumidLabel.setOpaque(true);
         initialGHHumidLabel.setBackground(HUMID);
 
-        final JLabel HumidRateLabel = new JLabel("Humidifier Humidity rate (% per minute):");
-        final JLabel aridRateLabel = new JLabel("Ambient aridity rate (% per minute):");
+        final JLabel HumidRateLabel = new JLabel("Humidifier Humidity Rate (% Per Minute):");
+        final JLabel aridRateLabel = new JLabel("Ambient Aridity Rate (% Per Minute):");
 
-        //Humidifier settings text fields
+        // Humidifier settings text fields
         final JTextField initialGHHumidField = new JTextField(2);
         initialGHHumidField.setBackground(GREY);
 
         final JTextField humidRateField = new JTextField(2);
         final JTextField aridRateField = new JTextField(2);
 
-        //ADD THEM TO THE MAIN PANEL
+        // Add the newly created humidity elements to the main panel
         GHPanel.add(initialGHHumidLabel);
         GHPanel.add(initialGHHumidField);
         GHPanel.add(HumidRateLabel);
@@ -278,47 +277,47 @@ public class GreenHouseGUI {
         GHPanel.add(aridRateLabel);
         GHPanel.add(aridRateField);
 
-        //Add label to the top, the rest to the center
+        // Add a label to the top
         firstTabPanel.add(GHLabel, BorderLayout.NORTH);
         firstTabPanel.add(GHPanel, BorderLayout.CENTER);
 
-        //CREATE THE TAB
+        // Create the tab
         panel.addTab("INITIAL VALUES", firstTabPanel);
 
         //**********************************************
-        //SOUTH PANEL
+        // SOUTH PANEL
         //**********************************************
 
-        //4 buttons
+        // Create 4 buttons
         final JButton simulation = new JButton("RUN SIMULATION");
-        final JButton loadf = new JButton("Load saved simulation");
-        final JButton savef = new JButton("Save current simulation");
+        final JButton loadf = new JButton("Load Saved Simulation");
+        final JButton savef = new JButton("Save Current Simulation");
         final JButton stop = new JButton("STOP SIMULATION");
         stop.setEnabled(false);
 
-        //Panel for sliders relating to temp
+        // Panel for sliders relating to the temperature
         final JPanel tempSliderPanel = new JPanel();
         tempSliderPanel.setLayout(new GridLayout(2, 1));
 
-        //Label the slider
-        final JLabel tempSliderLabel = new JLabel("Temperature update time (seconds)");
+        // Label the slider
+        final JLabel tempSliderLabel = new JLabel("Temperature Update Time (Seconds)");
 
-        //Create and set the slider for temperature
+        // Create and set the slider for temperature
         final JSlider tempSlider = new JSlider(1, 21);
         tempSlider.setMajorTickSpacing(5);
         tempSlider.setMinorTickSpacing(1);
         tempSlider.setPaintTicks(true);
         tempSlider.setPaintLabels(true);
 
-        //Add label and slider to panel
+        // Add label and slider to panel
         tempSliderPanel.add(tempSliderLabel);
         tempSliderPanel.add(tempSlider);
 
-        //Create the same slider setup for the soil
+        // Create the same slider setup for the soil moisture
         final JPanel soilSliderPanel = new JPanel();
         soilSliderPanel.setLayout(new GridLayout(2, 1));
 
-        final JLabel soilSliderLabel = new JLabel("Soil Moisture update time (seconds)");
+        final JLabel soilSliderLabel = new JLabel("Soil Moisture Update Time (Seconds)");
 
         final JSlider soilSlider = new JSlider(1, 21);
         soilSlider.setMajorTickSpacing(5);
@@ -329,11 +328,11 @@ public class GreenHouseGUI {
         soilSliderPanel.add(soilSliderLabel);
         soilSliderPanel.add(soilSlider);
 
-        //Then do the same for humidifier
+        // Do the same for the humidity
         final JPanel humidSliderPanel = new JPanel();
         humidSliderPanel.setLayout(new GridLayout(2, 1));
 
-        final JLabel humidSliderLabel = new JLabel("Humidity update time (seconds)");
+        final JLabel humidSliderLabel = new JLabel("Humidity Update Time (Seconds)");
 
         final JSlider humidSlider = new JSlider(1, 21);
         humidSlider.setMajorTickSpacing(5);
@@ -344,30 +343,30 @@ public class GreenHouseGUI {
         humidSliderPanel.add(humidSliderLabel);
         humidSliderPanel.add(humidSlider);
 
-        //Create a panel to organize all the sliders
+        // Create a panel to organize all the sliders
         final JPanel sliderPanel = new JPanel();
         sliderPanel.setLayout(new GridLayout(3, 1));
 
-        //Add the sliders to the panel
+        // Add the sliders to the panel
         sliderPanel.add(tempSliderPanel);
         sliderPanel.add(soilSliderPanel);
         sliderPanel.add(humidSliderPanel);
 
-        //Create a panel for the buttons
+        // Create a panel for the buttons
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(4, 1));
 
-        //Add the buttons
+        // Add the buttons to the panel
         buttonPanel.add(simulation);
         buttonPanel.add(loadf);
         buttonPanel.add(savef);
         buttonPanel.add(stop);
 
-        //Create a panel to show the current data in the form of label
+        // Create a panel to show the current data in the form of label
         final JPanel labelPanel = new JPanel();
         labelPanel.setLayout(new GridLayout(3, 2));
 
-        //Current temperature, color it
+        // Current temperature, color
         final JLabel currentTempLabel = new JLabel("CURRENT TEMPERATURE (CELSIUS):");
         currentTempLabel.setOpaque(true);
         currentTempLabel.setBackground(GREY);
@@ -376,11 +375,11 @@ public class GreenHouseGUI {
         currentTempLabelAmount.setOpaque(true);
         currentTempLabelAmount.setBackground(GREY);
 
-        //current soil, dont color
+        // Current soil moisture, no color
         final JLabel currentSoilLabel = new JLabel("CURRENT SOIL MOISTURE (%)");
         final JLabel currentSoilLabelAmount = new JLabel("0");
 
-        //Current Humid, color
+        // Current humidity, color
         final JLabel currentHumidLabel = new JLabel("CURRENT HUMIDITY (%)");
         currentHumidLabel.setOpaque(true);
         currentHumidLabel.setBackground(GREY);
@@ -389,7 +388,7 @@ public class GreenHouseGUI {
         currentHumidLabelAmount.setOpaque(true);
         currentHumidLabelAmount.setBackground(GREY);
 
-        //Add the labels in the correct order
+        // Add the labels in the correct order
         labelPanel.add(currentTempLabel);
         labelPanel.add(currentTempLabelAmount);
 
@@ -399,22 +398,22 @@ public class GreenHouseGUI {
         labelPanel.add(currentHumidLabel);
         labelPanel.add(currentHumidLabelAmount);
 
-        //ADD EVERYTHING TO SECOND TAB PANEL
+        // Add everything to the second tab panel
         secondTabPanel.add(northPanel, BorderLayout.NORTH);
         secondTabPanel.add(sliderPanel, BorderLayout.CENTER);
         secondTabPanel.add(westPanel, BorderLayout.WEST);
         secondTabPanel.add(buttonPanel, BorderLayout.EAST);
         secondTabPanel.add(labelPanel, BorderLayout.SOUTH);
 
-        //CREATE SECOND TAB
+        // Create a second tab
         panel.addTab("CONTROL SETTINGS", secondTabPanel);
 
-        //Saving frame
+        // Saving frame
         final JFrame saveFrame = new JFrame();
         final JPanel savePanel = new JPanel();
         savePanel.setLayout(new GridLayout(3, 1));
 
-        final JLabel saveLabel = new JLabel("Name of file to save");
+        final JLabel saveLabel = new JLabel("Name Of The Log File To Save");
         final JTextField saveField = new JTextField();
         final JButton save = new JButton("SAVE");
 
@@ -427,12 +426,12 @@ public class GreenHouseGUI {
         saveFrame.setSize(150, 150);
         saveFrame.setVisible(false);
 
-        //Load frame
+        // Load frame
         final JFrame loadFrame = new JFrame();
         final JPanel loadPanel = new JPanel();
         loadPanel.setLayout(new GridLayout(3, 1));
 
-        final JLabel loadLabel = new JLabel("Name of file to load");
+        final JLabel loadLabel = new JLabel("Name Of The Log File To Load");
         final JTextField loadField = new JTextField();
         final JButton load = new JButton("LOAD");
 
@@ -445,17 +444,22 @@ public class GreenHouseGUI {
         loadFrame.setSize(150, 150);
         loadFrame.setVisible(false);
 
-        // Sets the default initial values for the settings
-        initialGHTempField.setText("20");
-        heatingRateField.setText("5");
-        coolingRateField.setText("5");
-        ambientTempRateField.setText("5");
-        initialGHSoilField.setText("20");
-        moistureRateField.setText("5");
-        dryingRateField.setText("5");
-        initialGHHumidField.setText("35");
-        humidRateField.setText("5");
-        aridRateField.setText("5");
+        // Sets the default initial values for the simulation
+        tempRangeField.setText("33");
+        initialGHTempField.setText("27.5");
+        heatingRateField.setText("10");
+        coolingRateField.setText("9.5");
+        ambientTempRateField.setText("2.505");
+        soilRangeField.setText("20");
+        soilRangeField2.setText("25");
+        initialGHSoilField.setText("25");
+        moistureRateField.setText("12");
+        dryingRateField.setText("6");
+        humidRangeField.setText("30");
+        humidRangeField2.setText("40");
+        initialGHHumidField.setText("25");
+        humidRateField.setText("10.5");
+        aridRateField.setText("3.25");
 
         class SlidingClickingListener implements ActionListener, ChangeListener {
             private GreenHouseEnvironment GHE;
@@ -473,7 +477,7 @@ public class GreenHouseGUI {
             public void actionPerformed(ActionEvent bc) {
                 if (bc.getSource().equals(simulation)) {
 
-                    //disable and enable certain fields and buttons
+                    // Disable and enable certain fields and buttons
                     simulation.setEnabled(false);
                     stop.setEnabled(true);
                     savef.setEnabled(false);
@@ -501,14 +505,14 @@ public class GreenHouseGUI {
                     humidRateField.setEditable(false);
                     aridRateField.setEditable(false);
 
-                    //Initialize the GHE
+                    // Initialize the GreenHouseEnvironment
                     double initialTemp = Double.parseDouble(initialGHTempField.getText());
                     double initialSoil = Double.parseDouble(initialGHSoilField.getText());
                     double initialHumid = Double.parseDouble(initialGHHumidField.getText());
 
                     GHE = new GreenHouseEnvironment(initialTemp, initialSoil, initialHumid);
 
-                    //Initialize the temperature thread
+                    // Initialize the temperature thread
                     double furnaceRate = Double.parseDouble(heatingRateField.getText());
                     double coolingRate = Double.parseDouble(coolingRateField.getText()) * -1;
                     double upperLimitTemp = Double.parseDouble(tempRangeField.getText()) + 3;
@@ -518,7 +522,7 @@ public class GreenHouseGUI {
                     tempSensor = new TempThread(upperLimitTemp, lowerLimitTemp, furnaceRate,
                             coolingRate, ambientTemp, GHE);
 
-                    //Initialize the soil thread
+                    // Initialize the soil moisture thread
                     double moistureRate = Double.parseDouble(moistureRateField.getText());
                     double upperLimitSoil = Double.parseDouble(soilRangeField2.getText());
                     double lowerLimitSoil = Double.parseDouble(soilRangeField.getText());
@@ -526,7 +530,7 @@ public class GreenHouseGUI {
 
                     soilSensor = new SoilThread(upperLimitSoil, lowerLimitSoil, moistureRate, ambientSoil, GHE);
 
-                    //Initialize the humid thread
+                    // Initialize the humidity thread
                     double humidRate = Double.parseDouble(humidRateField.getText());
                     double upperLimitHumid = Double.parseDouble(humidRangeField2.getText());
                     double lowerLimitHumid = Double.parseDouble(humidRangeField.getText());
@@ -534,25 +538,54 @@ public class GreenHouseGUI {
 
                     humidSensor = new HumidThread(upperLimitHumid, lowerLimitHumid, humidRate, ambientArid, GHE);
 
-                    //initialize the GreenHouse thread
+                    // initialize the GreenHouse master thread to store all the threads & data
                     GThread = new GreenHouseThread(GHE, tempSensor, humidSensor, soilSensor, currentTempLabelAmount, currentSoilLabelAmount, currentHumidLabelAmount, ACActivatedLabel, furnaceActivatedLabel, sprinklerActivatedLabel, humidActivatedLabel);
                     GHE.tempChangeRate = tempChangeRate;
                     GHE.soilChangeRate = soilChangeRate;
                     GHE.humidChangeRate = humidChangeRate;
 
-                    // Starts the Threads
+                    // Starts the threads
                     GThread.runSubThreads();
                 }
 
                 if (bc.getSource().equals(loadf)) {
                     loadFrame.setVisible(true);
-                    // TODO Get the last saved simulation's file name and automatically have it selected at the default file to load
+
+                    // Creates a new empty placeholder file object in the current directory
+                    File finalFileCheck = new File(".");
+
+                    // Initialize a counter to keep track of the number of log files present in the current directory
+                    int logFilesCounter = 0;
+
+                    // Loops through the file names of all objects in the current directory and counts the number of pre-existing log files
+                    for (int counter = 0; counter < finalFileCheck.listFiles().length; counter++) {
+                        if (finalFileCheck.listFiles()[counter].getName().contains("Simulation Log"))
+                            logFilesCounter++;
+                    }
+
+                    // Updates the load file name text box with the last found log file's name
+                    loadField.setText("Simulation Log " + logFilesCounter + ".txt");
                 }
 
                 if (bc.getSource().equals(savef)) {
                     saveFrame.setVisible(true);
-                    // TODO Get the last saved simulation's file name and increment the file index counter
+
+                    // Creates a new empty placeholder file object in the current directory
+                    File finalFileCheck = new File(".");
+
+                    // Initialize a counter to keep track of the number of log files present in the current directory
+                    int logFilesCounter = 1;
+
+                    // Loops through the file names of all objects in the current directory and counts the number of pre-existing log files
+                    for (int counter = 0; counter < finalFileCheck.listFiles().length; counter++) {
+                        if (finalFileCheck.listFiles()[counter].getName().contains("Simulation Log"))
+                            logFilesCounter++;
+                    }
+
+                    // Updates the save file name text box with the last found log file's name incremented by 1
+                    saveField.setText("Simulation Log " + logFilesCounter + ".txt");
                 }
+
                 if (bc.getSource().equals(stop)) {
                     simulation.setEnabled(true);
                     stop.setEnabled(false);
@@ -581,34 +614,130 @@ public class GreenHouseGUI {
                     humidRateField.setEditable(true);
                     aridRateField.setEditable(true);
 
-                    //Stops Threads
+                    // Stops the threads
                     GThread.disableSubThreads();
                 }
 
                 if (bc.getSource().equals(load)) {
                     loadFrame.setVisible(false);
-                    // TODO Loading simulation
+                    try {
+                        // Initializes file reading utility
+                        FileReader fileImport = new FileReader(loadField.getText());
+                        BufferedReader fileReader = new BufferedReader(fileImport);
+
+                        // Loops through the data ArrayList and sets all the logged data to the simulation's settings (skips over / ignores irrelevant data)
+                        for (int counter = 1; counter < 23; counter++) {
+                            switch (counter) {
+                                case 3:
+                                    tempRangeField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 4:
+                                    initialGHTempField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 5:
+                                    coolingRateField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 6:
+                                    heatingRateField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 7:
+                                    ambientTempRateField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 8:
+                                    tempSlider.setValue(Integer.valueOf(fileReader.readLine().substring(4)));
+                                    break;
+                                case 10:
+                                    soilRangeField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 11:
+                                    soilRangeField2.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 12:
+                                    initialGHSoilField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 13:
+                                    moistureRateField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 14:
+                                    dryingRateField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 15:
+                                    soilSlider.setValue(Integer.valueOf(fileReader.readLine().substring(4)));
+                                    break;
+                                case 17:
+                                    humidRangeField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 18:
+                                    humidRangeField2.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 19:
+                                    initialGHHumidField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 20:
+                                    humidRateField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 21:
+                                    aridRateField.setText(fileReader.readLine().substring(4));
+                                    break;
+                                case 22:
+                                    humidSlider.setValue(Integer.valueOf(fileReader.readLine().substring(4)));
+                                    break;
+                                default:
+                                    fileReader.readLine();
+                            }
+                        }
+
+                        // Closes the file writing utility
+                        fileReader.close();
+                    } catch (IOException e) {
+                    } catch (NullPointerException e) {
+                    }
                 }
 
                 if (bc.getSource().equals(save)) {
                     saveFrame.setVisible(false);
-                    // TODO Saving simulation
                     try {
-                        // File Path Of The File To Append The Data To
-                        String finalFile = "Simulation Log.txt";
-
                         // Initializes file writing utility
-                        FileWriter fileWriter = null;
+                        FileWriter fileWriter = new FileWriter(saveField.getText());
 
-                        fileWriter = new FileWriter(finalFile);
-                        // Loops through and prints out the logged data from the ArrayList to the log file
+                        // Writes out all the simulation settings data
+                        fileWriter.write("SIMULATION SETTINGS");
+
+                        fileWriter.write("\nTEMPERATURE");
+                        fileWriter.write("\n T: " + tempRangeField.getText());
+                        fileWriter.write("\n I: " + initialGHTempField.getText());
+                        fileWriter.write("\nCR: " + coolingRateField.getText());
+                        fileWriter.write("\nHR: " + heatingRateField.getText());
+                        fileWriter.write("\nAR: " + ambientTempRateField.getText());
+                        fileWriter.write("\nUT: " + tempSlider.getValue());
+
+                        fileWriter.write("\nSOIL MOISTURE");
+                        fileWriter.write("\nT1: " + soilRangeField.getText());
+                        fileWriter.write("\nT2: " + soilRangeField2.getText());
+                        fileWriter.write("\n I: " + initialGHSoilField.getText());
+                        fileWriter.write("\n R: " + moistureRateField.getText());
+                        fileWriter.write("\nAR: " + dryingRateField.getText());
+                        fileWriter.write("\nUT: " + soilSlider.getValue());
+
+                        fileWriter.write("\nHUMIDITY");
+                        fileWriter.write("\nT1: " + humidRangeField.getText());
+                        fileWriter.write("\nT2: " + humidRangeField2.getText());
+                        fileWriter.write("\n I: " + initialGHHumidField.getText());
+                        fileWriter.write("\n R: " + humidRateField.getText());
+                        fileWriter.write("\nAR: " + aridRateField.getText());
+                        fileWriter.write("\nUT: " + humidSlider.getValue());
+
+                        fileWriter.write("\n\nLOG DATA");
+
+                        // Loops through the data ArrayList and writes out the all the logged data to the log file
                         for (int counter = 0; counter < GHE.logData.size(); counter++) {
-                            // Appends the data to the file
                             fileWriter.write("\n" + GHE.logData.get(counter));
                         }
+
                         // Closes the file writing utility
                         fileWriter.close();
                     } catch (IOException e) {
+                    } catch (NullPointerException e) {
                     }
                 }
 
@@ -644,10 +773,10 @@ public class GreenHouseGUI {
             }
         }
 
-        //Make ultimate listener
+        // Make ultimate listener
         SlidingClickingListener lis = new SlidingClickingListener();
 
-        //Add the lis to the buttons
+        // Add the listener to the buttons
         simulation.addActionListener(lis);
         loadf.addActionListener(lis);
         savef.addActionListener(lis);
@@ -655,15 +784,15 @@ public class GreenHouseGUI {
         load.addActionListener(lis);
         save.addActionListener(lis);
 
-        //add the lis to the sliders
+        // Add the listener to the sliders
         tempSlider.addChangeListener(lis);
         soilSlider.addChangeListener(lis);
         humidSlider.addChangeListener(lis);
 
-        //set up frame
+        // Set up the main GUI frame
         frame.add(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(590, 470);
+        frame.setSize(620, 470);
         frame.setVisible(true);
     }
 }
