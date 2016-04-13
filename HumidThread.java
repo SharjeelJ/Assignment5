@@ -108,8 +108,12 @@ public class HumidThread extends Thread {
                 GHE.changeHumidity(100);
             }
 
-            // Adds the data into the ArrayList to log the simulation
-            GHE.logData.add("HUMIDITY: " + Double.toString(GHE.humidity()));
+            // Adds the data into the ArrayList To log the simulation (if an out of bounds error is experienced reattempts to write to the log file)
+            try {
+                GHE.logData.add("HUMIDITY: " + Double.toString(GHE.humidity()));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                GHE.logData.add("HUMIDITY: " + Double.toString(GHE.humidity()));
+            }
 
             // Puts the thread to sleep till the next update interval
             try {

@@ -145,8 +145,12 @@ public class TempThread extends Thread {
                 }
             }
 
-            // Adds the data into the ArrayList to log the simulation
-            GHE.logData.add("TEMPERATURE: " + Double.toString(GHE.temperature()));
+            // Adds the data into the ArrayList To log the simulation (if an out of bounds error is experienced reattempts to write to the log file)
+            try {
+                GHE.logData.add("TEMPERATURE: " + Double.toString(GHE.temperature()));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                GHE.logData.add("TEMPERATURE: " + Double.toString(GHE.temperature()));
+            }
 
             // Puts the thread to sleep till the next update interval
             try {
